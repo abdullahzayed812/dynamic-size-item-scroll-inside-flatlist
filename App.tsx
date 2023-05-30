@@ -6,113 +6,72 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
+  FlatList,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
+import { FlatListItem } from './src/components/FlatListItem';
+import { IMAGES } from './src/config/images';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const DATA: string[] = [
+  "Aberdeen", "Abilene", "Akron", "Albany","Durham", "El Monte", "El Paso", "Elizabeth", "Elk Grove", "Elkhart", "Erie", "Escondido", "Eugene", "Evansville"
+];
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const POSITION_SYSTEM_DATA = [
+  {
+    imageSource: IMAGES.leftPosition,
+  },
+  {
+    imageSource: IMAGES.middlePosition,
+  },
+  {
+    imageSource: IMAGES.rightPosition,
+  }
+]
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const NAVIGATION_SYSTEM_DATA = [
+  {
+    imageSource: IMAGES.arrowLeft
+  },
+  {
+    imageSource: IMAGES.arrowRight
+  },
+]
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [initialScrollIndex, setInitialScrollIndex] = React.useState<number>(0);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const renderItem = (item: string, index: number) => {
+    return (
+      <FlatListItem text={item} onPress={() => {}} index={index} />
+    )
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    <SafeAreaView>
+      <View style={styles.container}>
+        <FlatList data={DATA} renderItem={({ item ,index}) => renderItem(item, index)} horizontal initialScrollIndex={initialScrollIndex} contentContainerStyle={{ height: 34}} showsHorizontalScrollIndicator={false} />
+        <View style={styles.navigationContainer}>
+          <View></View>
+          <View></View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    paddingTop: 250
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  navigationContainer: {
+    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }
 });
 
 export default App;
