@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { COLORS } from "../config/colors";
 
@@ -6,15 +6,32 @@ interface Props {
   onPress: () => void;
   text: string;
   index: number;
+  initialScrollIndex: number;
 }
 
-export const FlatListItem: React.FC<Props> = ({ onPress, text, index }) => {
+export const FlatListItem: React.FC<Props> = ({
+  onPress,
+  text,
+  index,
+  initialScrollIndex,
+}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        {
+          backgroundColor:
+            index === initialScrollIndex
+              ? COLORS.mainColor
+              : COLORS.lightMainColor,
+        },
+      ]}
+      onPress={onPress}
+    >
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -28,5 +45,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "black",
-  }
-})
+  },
+});
